@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1 class="subtitle-1 grey--text">This is an team page</h1>
     <v-container class="my-5">
       <v-row wrap>
         <v-col cols="12" md="4" sd="6" lg="3" v-for="person in team" :key="person.name">
@@ -14,12 +13,12 @@
               <div class="subtitle-1">{{person.name}}</div>
               <div class="grey--text">{{person.role}}</div>
             </v-card-text>
-            <v-card-action>
+            <v-card-actions>
               <v-btn text color="orange">
                 <v-icon small left>mdi-message</v-icon>
                 <span>message</span>
               </v-btn>
-            </v-card-action>
+            </v-card-actions>
           </v-card>
         </v-col>
       </v-row>

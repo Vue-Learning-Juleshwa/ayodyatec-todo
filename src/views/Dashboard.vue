@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1 class="subtitle-1 grey--text">Homepage</h1>
     <v-container class="my-5">
       <!-- <v-tooltip bottom>
         <template v-slot:activator="{ on }">
@@ -60,60 +59,33 @@
 
 <script>
 // @ is an alias to /src
+import db from "@/config/fb";
 
 export default {
   name: "Dashboard",
   components: {},
   data() {
     return {
-      projects: [
-        {
-          title: "Design Portfolios for Remote Job",
-          pic: "Micha",
-          due_date: "28 February 2020",
-          status: "Overdue",
-          content:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam accusantium perferendis laboriosam deserunt cum, voluptas nisi at totam veritatis nesciunt iste aspernatur nobis officiis laudantium dolore autem quo eum maiores."
-        },
-        {
-          title: "Setting Homepage for Learn2Code",
-          pic: "Juleshwa",
-          due_date: "26 March 2020",
-          status: "Completed",
-          content:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam accusantium perferendis laboriosam deserunt cum, voluptas nisi at totam veritatis nesciunt iste aspernatur nobis officiis laudantium dolore autem quo eum maiores."
-        },
-        {
-          title: "Learning React Native",
-          pic: "Bluebell",
-          due_date: "28 June 2020",
-          status: "Ongoing",
-          content:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam accusantium perferendis laboriosam deserunt cum, voluptas nisi at totam veritatis nesciunt iste aspernatur nobis officiis laudantium dolore autem quo eum maiores."
-        },
-        {
-          title: "Create Community Forum",
-          pic: "Harari",
-          due_date: "28 April 2020",
-          status: "Ongoing",
-          content:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam accusantium perferendis laboriosam deserunt cum, voluptas nisi at totam veritatis nesciunt iste aspernatur nobis officiis laudantium dolore autem quo eum maiores."
-        },
-        {
-          title: "Online Class with Zoom",
-          pic: "Juleshwa",
-          due_date: "26 April 2020",
-          status: "Ongoing",
-          content:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam accusantium perferendis laboriosam deserunt cum, voluptas nisi at totam veritatis nesciunt iste aspernatur nobis officiis laudantium dolore autem quo eum maiores."
-        }
-      ]
+      projects: []
     };
   },
   methods: {
     sortBy(prop) {
       this.projects.sort((a, b) => (a[prop] < b[prop] ? -1 : 1));
     }
+  },
+  created() {
+    db.collection("projects").onSnapshot(res => {
+      const changes = res.docChanges();
+      changes.forEach(change => {
+        if (change.type === "added") {
+          this.projects.push({
+            ...change.doc.data(),
+            id: change.doc.id
+          });
+        }
+      });
+    });
   }
 };
 </script>
